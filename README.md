@@ -1,2 +1,11 @@
-server.js - server startup/server build
-index.html - html minor styling
+LebChat is a web comunication service based off of Javascript, HTML, and node. 
+It currently features:
+- Real-Time Communitcation
+- Usernames
++++++++++++++++++++++++++
+LOG:
+BETA 0.01 - 7/24/2025
+BETA 0.02 - 7/24/2025
+BETA 0.03 - 7/25/2025
+BETA 0.04 - 7/25/2025
+V1.00 - 7/25/2025
