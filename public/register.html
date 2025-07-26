@@ -1,0 +1,73 @@
+<!-- public/register.html or public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LebChat Login/Register</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #f0f0f0;
+    }
+    form {
+      background: white;
+      padding: 2em;
+      border-radius: 1em;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    input {
+      display: block;
+      margin: 1em 0;
+      padding: 0.5em;
+      width: 100%;
+    }
+    button {
+      padding: 0.5em 1em;
+    }
+  </style>
+</head>
+<body>
+  <h2>Welcome to LebChat</h2>
+  <form id="authForm">
+    <input type="text" id="username" placeholder="Username" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button type="submit">Login / Register</button>
+  </form>
+
+  <script>
+    document.getElementById('authForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!username || !password) return alert('Please enter both fields');
+
+      try {
+        const res = await fetch('/auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          localStorage.setItem('username', username);
+          location.href = '/chat.html';
+        } else {
+          alert(data.message || 'Login failed');
+        }
+      } catch (err) {
+        alert('An error occurred. Check console.');
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>
