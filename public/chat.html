@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>LebChat</title>
+  <link rel="stylesheet" href="chat.css"> <!-- ✅ CORRECT RELATIVE PATH -->
+</head>
+<body>
+  <header>LebChat 🗨️</header>
+  <div id="chat-container"></div>
+  <div id="input-container">
+    <input type="text" id="recipient" placeholder="Recipient">
+    <input type="text" id="message" placeholder="Type your message...">
+    <button id="send">Send</button>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const username = localStorage.getItem('username'); // ✅ FIXED
+    if (!username) {
+      window.location.href = '/register.html';
+    }
+
+    socket.emit('set username', username);
+
+    const chatContainer = document.getElementById('chat-container');
+    const recipientInput = document.getElementById('recipient');
+    const messageInput = document.getElementById('message');
+    const sendBtn = document.getElementById('send');
+
+    function appendMessage(msg, isSentByUser) {
+      const div = document.createElement('div');
+      div.classList.add('message', isSentByUser ? 'sent' : 'received');
+      div.textContent = `[${msg.from} → ${msg.to}] ${msg.message}`;
+      chatContainer.appendChild(div);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    sendBtn.onclick = () => {
+      const to = recipientInput.value.trim();
+      const message = messageInput.value.trim();
+      if (to && message) {
+        socket.emit('private message', { to, message });
+        messageInput.value = '';
+      }
+    };
+
+    socket.on('private message', (msg) => {
+      appendMessage(msg, msg.from === username);
+    });
+
+    socket.on('chat history', (history) => {
+      history.forEach(msg => {
+        appendMessage(msg, msg.from === username);
+      });
+    });
+  </script>
+</body>
+</html>
