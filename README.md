@@ -1,4 +1,4 @@
-*LEBCHAT IS TEMPORARILY ClOSED FOR BUG AND SECURITY FIXES.*
+**LEBCHAT IS TEMPORARILY ClOSED FOR BUG AND SECURITY FIXES.**
 _________________________________________________________________
 LebChat is a web comunication service based off of Javascript, HTML, and node. 
 CURRENT URL: lebchat.onrender.com
